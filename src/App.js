@@ -1,30 +1,29 @@
-import './App.css';
+import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserContext } from "./components/UserContexts";
+import { useState } from "react";
+import Nav from "./components/Nav";
+import AllArticles from "./components/AllArticles";
+import Header from "./components/Header"
 
-import Header from './components/Header'
-import AllArticles from './components/AllArticles'
-import Homepage from './components/Homepage'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+
 
 function App() {
   return (
     <BrowserRouter>
-    <div className="App">
-      <Header />
-      <Routes>
-        <Route path="/AllArticles" element={<AllArticles />} />
-
-      </Routes>
-    </div>
+      <UserContext.Provider value={{ username: "tickle122" }}>
+        <div className="App">
+          <Header />
+          <Nav />
+          <Routes>
+          <Route path="AllArticles" element={<AllArticles />} />
+          <Route path="/topic/:slug" element={<AllArticles />} />
+  
+          </Routes>
+        </div>
+      </UserContext.Provider>
     </BrowserRouter>
   );
 }
 
 export default App;
-
-
-// app.get("/api/topics", getTopics)
-// app.get("/api/articles/:article_id", getArticleById)
-// app.get('/api/users', getUsers)
-// app.get('/api/articles', getArticles)
-// app.get("/api/articles/:article_id/comments", getArticleComments)
-// app.post('/api/articles/:article_id/comments', postCommentsByArticleId)

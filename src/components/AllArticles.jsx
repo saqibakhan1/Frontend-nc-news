@@ -1,32 +1,33 @@
-import axios from "axios";
 import { useEffect,useState } from "react";
-import ArticleCard from "./ArticleCard";
+import { Link, useParams } from "react-router-dom";
+import { fetchArticles } from "../api.js";
+import "../App.css";
 
 const AllArticles = () => {
-    const [items, setItems] = useState([]);
-    useEffect(() => {
-      axios
-        .get(
-          "https://be-nc-news-saqib.herokuapp.com/api/articles"
-        )
-        .then(({ data }) => {
+  const [articles, setArticles] = useState([]);
+  const { slug } = useParams();
 
-          setItems(data.allArticles);
-
-        });
-    }, []);
+  useEffect(() => {
+    fetchArticles(slug).then(({ data }) => {
+      setArticles(data.allArticles);
+    });
+  }, [slug]);
 
     return (
-      <main>
-        <h1>Listed Items</h1>
-        <ul>
-           {items.map((item, index) => {
-         return <ArticleCard item={item} key={index}/>
+        articles.map((article) => {
+              return (
+                 <div key={article.article_id} className="article">
+              <h5>{article.title}</h5>
+              <p>Topic: {article.topic}</p>
+              <p>Author: {article.author}</p>
+              <p>Created at: {new Date(article.created_at).toUTCString()}</p>
+              <p>Votes: {article.votes}</p>
+              <p>Comment count: {article.comment_count}</p>
+            </div>
+          )}
+              
+      
+        ))
+  };
 
-            })}
-          </ul>
-        </main>
-      );
-    };
-  
-  export default AllArticles;
+  export default AllArticles
